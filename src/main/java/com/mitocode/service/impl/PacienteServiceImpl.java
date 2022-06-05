@@ -1,21 +1,29 @@
 package com.mitocode.service.impl;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.mitocode.model.Paciente;
+import com.mitocode.repo.IGenericRepo;
 import com.mitocode.repo.IPacienteRepo;
 import com.mitocode.service.IPacienteService;
 
 @Service
-public class PacienteServiceImpl implements IPacienteService{
+public class PacienteServiceImpl extends CRUDImpl<Paciente,Integer> implements IPacienteService{
 	
 	@Autowired
 	private IPacienteRepo repo;//instancia que gestiona sping para logica de acceso de datos
 
 	@Override
+	protected IGenericRepo<Paciente, Integer> getRepo() {
+		
+		return repo;
+	}
+
+	/*@Override
 	public Paciente registrar(Paciente paciente) throws Exception {
 	
 		return repo.save(paciente);
@@ -43,6 +51,6 @@ public class PacienteServiceImpl implements IPacienteService{
 	
 		repo.deleteById(id);
 		
-	}
+	}*/
 
 }
