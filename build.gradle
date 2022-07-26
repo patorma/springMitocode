@@ -23,12 +23,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.0'
-    
+	// Hateoas - Nivel 3 Richardson 
+implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.5.1'
+	
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
 }
 
 tasks.named('test') {

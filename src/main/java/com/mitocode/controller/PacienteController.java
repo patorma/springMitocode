@@ -8,6 +8,8 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +26,8 @@ import com.mitocode.dto.PacienteDTO;
 import com.mitocode.exception.ModeloNotFoundException;
 import com.mitocode.model.Paciente;
 import com.mitocode.service.IPacienteService;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
@@ -103,5 +106,29 @@ public class PacienteController {
 		
 		service.eliminar(id);
 		 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	//objetivo listar un paciente por su id
+	@GetMapping("/hateoas/{id}")
+	public EntityModel<PacienteDTO> listarHateoas(@PathVariable("id") Integer id) throws Exception{
+		Paciente obj = service.listarPorId(id);
+		
+		if(obj == null) {
+			throw new ModeloNotFoundException("ID NO ENONTRADO " + id);
+		}
+		
+		PacienteDTO dto = mapper.map(obj, PacienteDTO.class);
+		EntityModel<PacienteDTO> recurso = EntityModel.of(dto);
+		//genera un link,un atributo llamado link que da la información de lo que quiero mostrar
+		//es decir quiero generar la url de algún recurso 
+		//cual es el texto de esta url -->linkTo(methodOn(this.getClass()) getClass es PaciienteController
+		// generamos un localhost:8080/pacientes/{id} el id es dinamico
+		//se apunta a un controlador y los metodos que tenga
+		WebMvcLinkBuilder link1 = linkTo(methodOn(this.getClass()).listarPorId(id));
+		WebMvcLinkBuilder link2 = linkTo(methodOn(this.getClass()).listarPorId(id));
+		
+		recurso.add(link1.withRel("paciente-info1"));
+		//recurso.add(link2.withRel("paciente-info2"));
+		
+		return recurso;
 	}
 }
