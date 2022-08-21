@@ -6,17 +6,21 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(description = "Paciente DTO Data")
 public class PacienteDTO {
 	
 	private Integer idPaciente;
 	
+	@Schema(description = "Nombres del Paciente")
 	@NotNull
 	@Size(min =3,message = "{nombres.size}")
 	private String nombres;
 	
+	@Schema(description = "Apellidoss del Paciente")
 	@NotNull
 	@Size(min =3,message = "{apellidos.size}")
 	private String apellidos;
